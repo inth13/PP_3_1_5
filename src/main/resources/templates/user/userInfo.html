@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+>
+<head>
+    <title>Spring Security Example</title><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <title>Users</title>
+    <style>
+        .main {
+            width: 600px;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin: 50px auto;
+            text-align: center;
+            width: 600px;
+        }
+
+        th, td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+</head>
+<body>
+<h1>welcome spring boot security page!</h1>
+
+<div class="main">
+    <table>
+        <caption>User info</caption>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Surname</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.surname}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<br>
+<a href="/logout">Logout</a>
+</body>
+</html>

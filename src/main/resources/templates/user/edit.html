@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        div.field {
+            padding-bottom: 5px;
+        }
+
+        div.field label {
+            display: block;
+            float: left;
+            width: 70px;
+            height: 15px;
+        }
+    </style>
+    <title>update</title>
+</head>
+<body>
+<p>editing user data</p>
+<form th:action="@{/admin/update}" th:method="PATCH" th:object="${user}">
+    <input th:field="*{id}" type="hidden">
+    <div class="field">
+        <label for="username">Name:</label>
+        <input id="username" th:field="*{username}" type="text"/>
+    </div>
+    <div class="field">
+        <label for="surname">Surname:</label>
+        <input id="surname" th:field="*{surname}" type="text"/>
+    </div>
+    <div class="field">
+        <input type="submit" value="Update"/>
+    </div>
+</form>
+<br>
+<a href="/logout">Logout</a>
+</body>
+</html>
