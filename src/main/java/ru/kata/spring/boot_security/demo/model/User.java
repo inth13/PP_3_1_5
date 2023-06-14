@@ -19,9 +19,8 @@ public class User implements UserDetails {
     private String surname;
     @Column(name = "password")
     private String password;
-    @Transient
-    private String passwordConfirm;
-    @ManyToMany(fetch = FetchType.EAGER)
+
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<Role> roles;
 
     public Long getId() {
@@ -73,14 +72,6 @@ public class User implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
     }
 
     public Set<Role> getRoles() {
