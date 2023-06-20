@@ -13,31 +13,33 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "username")
-    private String username;
-    @Column(name = "surname")
-    private String surname;
+
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
     @Column(name = "password")
     private String password;
+
+    @Column(name = "age")
+    private Byte age;
+
+    @Column(name = "email")
+    private String email;
 
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<Role> roles;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @Override
     public String getUsername() {
-        return username;
+        return firstName;
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.firstName = username;
     }
 
     @Override
@@ -82,11 +84,53 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    public String getSurname() {
-        return surname;
+    public Long getId() {
+        return id;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Byte getAge() {
+        return age;
+    }
+
+    public void setAge(Byte age) {
+        this.age = age;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getRolesAsString(){
+        StringBuilder builder = new StringBuilder();
+        roles.forEach(element -> builder.append(element.getName().replace("ROLE_", "")).append(" "));
+        return builder.toString();
+    }
+
+    public boolean isAdmin() {
+        return roles.stream().anyMatch(e -> "ROLE_ADMIN".equals(e.getName()));
     }
 }
