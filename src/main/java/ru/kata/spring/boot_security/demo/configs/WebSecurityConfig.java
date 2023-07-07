@@ -14,21 +14,24 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsServiceService;
+    private final LoginSuccessHandler loginSuccessHandler;
 
     public WebSecurityConfig(UserDetailsService userDetailsServiceService, LoginSuccessHandler loginSuccessHandler) {
         this.userDetailsServiceService = userDetailsServiceService;
+        this.loginSuccessHandler = loginSuccessHandler;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/admin/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/user/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/", "/index").permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/admin/")
+                .successHandler(loginSuccessHandler)
                 .permitAll()
                 .and()
                 .logout()

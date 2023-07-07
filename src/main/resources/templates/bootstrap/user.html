@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>User page</title>
+
+</head>
+<body>
+<nav class="navbar navbar-expand-xl navbar-dark bg-dark  d-flex justify-content-between px-3 mb-3">
+    <span class="text-white">
+        <th:block th:text="${currentUser.getEmail()}"/> with roles:
+        <th:block th:text="${currentUser.getRolesAsString}"/>
+    </span>
+    <a class="text-light" href="/logout">Logout</a>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="d-flex align-items-start">
+            <div class="col-2">
+                <div aria-orientation="vertical" class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist">
+
+                    <button aria-controls="v-pills-user" aria-selected="false" class="nav-link active"
+                            data-bs-target="#v-pills-user" data-bs-toggle="pill" id="v-pills-user-tab" role="tab"
+                            type="button">User
+                    </button>
+
+
+                </div>
+            </div>
+            <div class="col-10">
+                <div class="tab-content" id="v-pills-tabContent">
+
+                    <div aria-labelledby="v-pills-user-tab" class="tab-pane fade show active" id="v-pills-user"
+                         role="tabpanel"
+                         tabindex="0"><h1 class="mb-3">User information-page</h1>
+                        <div class="card">
+
+                            <div class="card-header h6">
+                                About user
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-borderless table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">First Name</th>
+                                        <th scope="col">Last Name</th>
+                                        <th scope="col">Age</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Role</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td th:text="${currentUser.id}"></td>
+                                        <td th:text="${currentUser.firstName}"></td>
+                                        <td th:text="${currentUser.lastName}"></td>
+                                        <td th:text="${currentUser.age}"></td>
+                                        <td th:text="${currentUser.email}"></td>
+                                        <td th:text="${currentUser.getRolesAsString}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script crossorigin="anonymous"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

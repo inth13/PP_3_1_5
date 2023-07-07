@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Transactional(readOnly = true)
     @Override
-    public User getUserByName(String name) {
-        return userRepository.findByUsername(name);
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 }

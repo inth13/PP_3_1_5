@@ -1,5 +1,7 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,18 +29,20 @@ public class AdminController {
 
     @GetMapping("/")
     public String showAllUser(ModelMap modelMap, Principal principal) {
-        User userByName = userServiceImpl.getUserByName(principal.getName());
+        Authentication authentication = (Authentication) principal;
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        User user = (User) userDetails;
+        String email = user.getEmail();
+
+        User userByEmail = userServiceImpl.getUserByEmail(email);
 
         List<User> allUsers = userServiceImpl.getAllUsers();
         modelMap.addAttribute("users", allUsers);
         modelMap.addAttribute("newUser", new User());
         modelMap.addAttribute("listOfRoles", roleServiceImpl.getAllRoles());
-        modelMap.addAttribute("userEmail", userByName.getEmail());
-        modelMap.addAttribute("userRoles", userByName.getRolesAsString());
-        modelMap.addAttribute("isAdmin", userByName.isAdmin());
-        modelMap.addAttribute("currentUser", userByName);
+        modelMap.addAttribute("currentUser", userByEmail);
 
-        return "bootstrap/users";
+        return "bootstrap/admin";
     }
 
     @GetMapping("/new")
