@@ -32,6 +32,8 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<Role> roles;
 
+    public User() {
+    }
 
     @Override
     public String getUsername() {
@@ -124,7 +126,7 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public String getRolesAsString(){
+    public String getRolesAsString() {
         StringBuilder builder = new StringBuilder();
         roles.forEach(element -> builder.append(element.getName().replace("ROLE_", "")).append(" "));
         return builder.toString();

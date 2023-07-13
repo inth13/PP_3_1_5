@@ -13,4 +13,6 @@ public interface RoleService {
     void remove(long id);
 
     Optional<Role> find(long id);
+
+    Role findByName(String name);
 }
