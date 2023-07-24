@@ -2,8 +2,8 @@ package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.exceptions.UserAlreadyExistException;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.impl.RoleServiceImpl;
@@ -11,7 +11,6 @@ import ru.kata.spring.boot_security.demo.service.impl.UserServiceImpl;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1/admin/user")
@@ -19,12 +18,10 @@ public class AdminRestController {
 
     private final UserServiceImpl userService;
     private final RoleServiceImpl roleService;
-    private final PasswordEncoder passwordEncoder;
 
-    public AdminRestController(UserServiceImpl userService, RoleServiceImpl roleService, PasswordEncoder passwordEncoder) {
+    public AdminRestController(UserServiceImpl userService, RoleServiceImpl roleService) {
         this.userService = userService;
         this.roleService = roleService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
@@ -33,9 +30,12 @@ public class AdminRestController {
     }
 
     @PostMapping
-    public ResponseEntity<User> addNewUser(@RequestBody User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return ResponseEntity.ok(userService.save(user));
+    public ResponseEntity<HttpStatus> addNewUser(@RequestBody User user) throws UserAlreadyExistException {
+        if (!userService.IsVacant(user.getUsername())) {
+            throw new UserAlreadyExistException("User with the same name already exists");
+        }
+        userService.save(user);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}")
@@ -45,37 +45,16 @@ public class AdminRestController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteById(@PathVariable long id) {
-        if (userService.findById(id).isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
         userService.remove(id);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable long id, @RequestBody User user) {
-        Optional<User> optionalUser = userService.findById(id);
-        if (optionalUser.isEmpty()) {
-            return ResponseEntity.notFound().build();
+        if (!userService.IsVacant(user.getUsername())) {
+            throw new UserAlreadyExistException("User with the same email already exists");
         }
-
-        User existingUser = optionalUser.get();
-        existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        existingUser.setEmail(user.getEmail());
-        existingUser.setLastName(user.getLastName());
-        existingUser.setUsername(user.getUsername());
-        existingUser.setAge(user.getAge());
-
-        Set<Role> newRoles = user.getRoles();
-        if (newRoles != null && !newRoles.isEmpty()) {
-            existingUser.getRoles().clear();
-            for (Role role : newRoles) {
-                existingUser.getRoles().add(roleService.findByName(role.getName()));
-            }
-        }
-
-        return ResponseEntity.ok(userService.save(existingUser));
+        return ResponseEntity.ok(userService.update(id, user));
     }
 
     @GetMapping("/roles")

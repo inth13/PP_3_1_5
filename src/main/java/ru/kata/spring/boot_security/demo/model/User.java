@@ -26,7 +26,7 @@ public class User implements UserDetails {
     @Column(name = "age")
     private Byte age;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -37,11 +37,11 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return firstName;
+        return email;
     }
 
     public void setUsername(String username) {
-        this.firstName = username;
+        this.email = username;
     }
 
     @Override

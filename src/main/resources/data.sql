@@ -14,7 +14,7 @@ create table users
     id         bigint auto_increment primary key,
     age        tinyint      null,
     email      varchar(255) not null unique,
-    first_name varchar(255) null,
+    first_name varchar(255) not null,
     last_name  varchar(255) null,
     password   varchar(255) null
 );
